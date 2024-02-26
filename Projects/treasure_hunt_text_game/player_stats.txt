@@ -1,0 +1,4 @@
+Health:2.99
+Sanity:2.99
+Skill:2.01
+Location:Beach

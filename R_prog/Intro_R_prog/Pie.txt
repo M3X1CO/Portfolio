@@ -1,0 +1,13 @@
+text = 'Hello World'
+
+ascii_codes = [ord(c) for c in text]
+
+print(ascii_codes)
+
+binary_numbers = [bin(c)[2:] for c in ascii_codes]
+
+print(binary_numbers)
+
+text = ''.join([chr(int(b, 2)) for b in binary_numbers])
+
+print(text)

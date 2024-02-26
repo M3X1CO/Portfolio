@@ -1,0 +1,8 @@
+Django==5.0.2
+google-generativeai==0.3.2
+ipython==8.22.1
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+django-environ==0.11.2
+gunicorn==21.2.0
+python-dotenv==1.0.1

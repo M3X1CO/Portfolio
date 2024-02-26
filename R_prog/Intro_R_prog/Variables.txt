@@ -1,0 +1,1 @@
+c("• Gender", "• Group", "• Heart Rate")
