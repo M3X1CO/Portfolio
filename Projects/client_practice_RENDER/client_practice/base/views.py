@@ -11,7 +11,9 @@ from .forms import RoomForm, UserForm
 import textwrap
 import google.generativeai as genai
 from IPython.display import Markdown
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def loginPage(request):
@@ -59,7 +61,7 @@ def registerPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "An error occured during registration")
+            messages.error(request, "An error occurred during registration")
 
     context = {
         'form': form,
@@ -208,6 +210,7 @@ def deleteMessage(request, pk):
     }
     return render(request, 'base/delete.html', context)
 
+
 @login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
@@ -242,7 +245,7 @@ def updateUser(request):
 
 
 def topicsPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    q = request.GET.get('q') if request.GET.get('q') is not None else ''
     topics = Topic.objects.filter(name__icontains=q)
     context = {
         'topics': topics
@@ -257,16 +260,19 @@ def activityPage(request):
     }
     return render(request, 'base/activity.html', context)
 
+
 # geminooooooooo
 def to_markdown(text):
     text = text.replace('•', '  *')
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-genai.configure(api_key="AIzaSyBN3fXecmaX6jWABwEtxPPMS-j6Do2Ae9o")
+
+genai.configure(api_key=os.getenv('GEMINI_SET_KEY'))
 model = genai.GenerativeModel('gemini-pro')
 chat = model.start_chat(history=[])
 response = chat.send_message("Detect the language and when you respond, answer the question and reply back in English. "
                              "This is Yuu. Aj. Bill is my teacher. I am studying ICT301")
+
 
 def reply(prompt):
     global chat
