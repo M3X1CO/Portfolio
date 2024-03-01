@@ -1,7 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse
-
 
 
 class Topic(models.Model):
@@ -19,9 +17,6 @@ class Room(models.Model):
     participants = models.ManyToManyField(User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-
-    def get_absolute_url(self):
-        return reverse('room', args=[str(self.id)])
 
     class Meta:
         ordering = ['-updated', '-created']

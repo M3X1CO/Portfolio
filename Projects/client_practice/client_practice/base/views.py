@@ -11,9 +11,7 @@ from .forms import RoomForm, UserForm
 import textwrap
 import google.generativeai as genai
 from IPython.display import Markdown
-import os
-from dotenv import load_dotenv
-load_dotenv()
+
 
 
 def loginPage(request):
@@ -61,7 +59,7 @@ def registerPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "An error occurred during registration")
+            messages.error(request, "An error occured during registration")
 
     context = {
         'form': form,
@@ -156,13 +154,12 @@ def createRoom(request):
                 room=new_room,
                 body=ai_response,
             )
-            room_url = new_room.get_absolute_url()
-            return redirect(room_url)
+
+            return redirect('home')
 
         context = {
             'form': form, 'topics': topics,
         }
-
         return render(request, 'base/room_form.html', context)
 
     except ValueError as e:
@@ -210,7 +207,6 @@ def deleteMessage(request, pk):
     }
     return render(request, 'base/delete.html', context)
 
-
 @login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
@@ -245,7 +241,7 @@ def updateUser(request):
 
 
 def topicsPage(request):
-    q = request.GET.get('q') if request.GET.get('q') is not None else ''
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)
     context = {
         'topics': topics
@@ -260,19 +256,16 @@ def activityPage(request):
     }
     return render(request, 'base/activity.html', context)
 
-
 # geminooooooooo
 def to_markdown(text):
     text = text.replace('•', '  *')
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-
-genai.configure(api_key=os.getenv('GEMINI_SET_KEY'))
+genai.configure(api_key="AIzaSyCK7salP7IAJislfWajxiaP2T2wnXiPmks")
 model = genai.GenerativeModel('gemini-pro')
 chat = model.start_chat(history=[])
 response = chat.send_message("Detect the language and when you respond, answer the question and reply back in English. "
                              "This is Yuu. Aj. Bill is my teacher. I am studying ICT301")
-
 
 def reply(prompt):
     global chat
